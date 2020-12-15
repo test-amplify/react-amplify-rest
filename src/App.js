@@ -3,7 +3,7 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import Amplify, { Auth, API } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import { Hub } from '@aws-amplify/core';
-i
+
 Amplify.configure(awsconfig);
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
 
   const apicall = async () => {
     console.log("api call started")
-    const response = await API.get("UserApi", "/users");
+    const response = await API.get("userApi", "/users");
     console.log("response>>>", response)
     if(response.length)setshowDetails(true)
     setUserList(response)
@@ -50,7 +50,7 @@ function App() {
   }
   const handleSubmit = async() => {
     console.log("response>>>", name,email)
-    const resp = await API.post("UserApi", "/users", { body: { id: Date.now().toString(), firstname:name, email:email, lastname: lastname } });
+    const resp = await API.post("userApi", "/users", { body: { id: Date.now().toString(), firstname:name, email:email, lastname: lastname } });
     console.log("post resp........>>>", resp)
     await apicall();
   };
