@@ -1,0 +1,45 @@
+{
+    "paths": [
+        {
+            "name": "/users",
+            "lambdaFunction": "reactamplifyrestd86da864",
+            "privacy": {
+                "protected": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ],
+                "unauth": [
+                    "/GET"
+                ]
+            },
+            "policyResourceName": "/users"
+        }
+    ],
+    "resourceName": "UserApi",
+    "apiName": "UserApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "reactamplifyrestd86da864"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 1,
+        "authRoleName": "amplify-reactamplifyrest-dev-133835-authRole",
+        "unAuthRoleName": "amplify-reactamplifyrest-dev-133835-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "reactamplifyrestd86da864",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
