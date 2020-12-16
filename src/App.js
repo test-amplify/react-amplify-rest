@@ -17,6 +17,8 @@ function App() {
   let [lastname, setlastname] = useState(null)
   let [userList, setUserList] = useState([])
   let [showDetails,setshowDetails]=useState(false)
+  let [editScenario,seteditScenario]=useState(false)
+  let [UserId, setUserId] = useState(null)
   useEffect(() => {
     
     let updateUser = async () => {
@@ -52,17 +54,25 @@ function App() {
   }
   const handleSubmit = async() => {
     console.log("response>>>", name,email)
+    if(editScenario){
+      const resp = await API.put("UserApi", "/users", { body: { id: UserId, firstname:name, email:email, lastname: lastname } });
+    }else{
     const resp = await API.post("UserApi", "/users", { body: { id: Date.now().toString(), firstname:name, email:email, lastname: lastname } });
     console.log("post resp........>>>", resp)
+    }
     await apicall();
   };
-  const handleEdit=(user) => {
-    setEmail(user.email)
-    
-   setlastname(user.lastname)
+  const handleEdit=async(user) => {
+    console.log("user>>edit",user)
+    seteditScenario(true);
+    setEmail(user.email);
+    setUserId(user.id);
+   setlastname(user.lastname);
+   setName(user.firstname);
   }
-  const handleDelete=async(id) => {
-//const resp = await API.delete("userApi",`/users:${id}.`);
+  const handleDelete=async(id,user) => {
+//const resp = await API.delete("userApi",`/users:${id}`,{ body: user });
+const resp = await API.delete("UserApi", "/users", { body:user });
   }
 
   return (
@@ -122,8 +132,8 @@ function App() {
             <td style={{width:200}} >{user.email}</td>
             
             <td style={{width:200}}>
-              {/* <button className="button muted-button" onClick={() =>{handleEdit(user)}} >Edit</button> */}
-              <button className="button muted-button" onClick={() =>{handleDelete(user.id)}}>Delete</button>
+              <button className="button muted-button" onClick={() =>{handleEdit(user)}} >Edit</button>
+              {/* <button className="button muted-button" onClick={() =>{handleDelete(user.id,user)}}>Delete</button> */}
             </td>
           </tr>
         ))
