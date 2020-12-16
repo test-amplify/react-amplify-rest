@@ -18,11 +18,13 @@ function App() {
   let [userList, setUserList] = useState([])
   let [showDetails,setshowDetails]=useState(false)
   useEffect(() => {
+    
     let updateUser = async () => {
       try {
         let user = await Auth.currentAuthenticatedUser()
+        console.log("user>>>>>",user)
         if (user) {
-          await apicall();
+         await apicall();
         }
         setUser(user)
       } catch {
@@ -42,7 +44,7 @@ function App() {
 
   const apicall = async () => {
     console.log("api call started")
-    const response = await API.get("userApi", "/users");
+    const response = await API.get("UserApi", "/users");
     console.log("response>>>", response)
     if(response.length)setshowDetails(true)
     setUserList(response)
@@ -50,7 +52,7 @@ function App() {
   }
   const handleSubmit = async() => {
     console.log("response>>>", name,email)
-    const resp = await API.post("userApi", "/users", { body: { id: Date.now().toString(), firstname:name, email:email, lastname: lastname } });
+    const resp = await API.post("UserApi", "/users", { body: { id: Date.now().toString(), firstname:name, email:email, lastname: lastname } });
     console.log("post resp........>>>", resp)
     await apicall();
   };
@@ -81,7 +83,7 @@ function App() {
         
           <legend>Add</legend>
           <div className="form-group">
-            <label htmlFor="title">Name</label>
+            <label htmlFor="title">First Name</label>
             <input type="text" className="form-control" id="name" placeholder="name" value={name} onChange={e => setName(e.target.value)} />
           </div>
           <div className="form-group">
@@ -92,10 +94,9 @@ function App() {
             <label htmlFor="content">Email</label>
             <input type="text" className="form-control" id="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
             </div>           
-             <button type="submit" className="btn btn-primary"  >
+             <button type="submit" className="btn btn-primary" onClick={() =>{handleSubmit()}} >
             Submit         
              </button>
-      
         <hr />
         <legend>List of Users</legend>
         {showDetails ? (
@@ -104,8 +105,9 @@ function App() {
     <thead>
       <tr>
         <th style={{width:200}}>Id</th>
-        <th style={{width:200}} >Email</th>
+        <th style={{width:200}}>First Name</th>
         <th style={{width:200}}>Last Name</th>
+        <th style={{width:200}} >Email</th>
         <th style={{width:200}}>Actions</th>
       </tr>
     </thead>
@@ -115,8 +117,10 @@ function App() {
         userList.map((user) => (
           <tr key={user.id}>
              <td style={{width:200}}>{user.id}</td>
+             <td style={{width:200}}>{user.firstname}</td>
+             <td style={{width:200}}>{user.lastname}</td>
             <td style={{width:200}} >{user.email}</td>
-            <td style={{width:200}}>{user.lastname}</td>
+            
             <td style={{width:200}}>
               {/* <button className="button muted-button" onClick={() =>{handleEdit(user)}} >Edit</button> */}
               <button className="button muted-button" onClick={() =>{handleDelete(user.id)}}>Delete</button>
